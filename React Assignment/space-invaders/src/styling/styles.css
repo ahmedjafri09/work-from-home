@@ -1,0 +1,56 @@
+.App{
+
+    height: 950px;
+    width: 1800px;
+}
+
+
+.main {
+    position: relative;
+    justify-content: center;
+    align-content: center;
+    margin: auto;
+    top: 75px;
+    bottom: auto;
+    height: 800px;
+    width: 800px;
+    background-image: url('../imgs/background.png');
+    background-size: cover;
+}
+
+.player {
+    position: absolute;
+    outline: none;
+    transition: all ease-in;
+    height: 70px;
+    width: 70px;
+    background-image: url('../imgs/player.png');
+    background-size: cover;
+}
+
+.enemyAlien {
+    position: absolute;
+    outline: none;
+    height: 60px;
+    width: 60px;
+    background-image: url('../imgs/enemy.png');
+    background-size: cover;
+}
+
+.enemyUfo {
+    position: absolute;
+    outline: none;
+    height: 60px;
+    width: 60px;
+    background-image: url('../imgs/enemyUfo.png');
+    background-size: cover;
+}
+
+.fire {
+    position: absolute;
+    outline: none;
+    height: 16px;
+    width: 16px;
+    background-image: url('../imgs/bullet.png');
+    background-size: cover;
+}
