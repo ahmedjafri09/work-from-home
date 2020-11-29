@@ -1,7 +1,7 @@
-import React from 'react';
-import './App.css';
-import Game from './game';
-import './styling/styles.css';
+import React from "react";
+import "./App.css";
+import Game from "./game";
+import "./styling/styles.css";
 
 function App() {
   return (
