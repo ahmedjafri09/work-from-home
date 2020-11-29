@@ -1,38 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import '../styling/styles.css';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from "react";
+import "../styling/styles.css";
+import PropTypes from "prop-types";
+import Bullet from "./bullets";
 
 const Fire = (props) => {
   const { horizontalPos, verticalPos } = props;
-  const [firing, setFiring] = useState(verticalPos);
-  const [bullets, setBullets] = useState([{ horizontal: horizontalPos, vertical: verticalPos, firing: verticalPos }]);
+  const [bullets, setBullets] = useState([]);
 
-  const handleFiring  = (bullet) => {
-    const newBullets = [...bullets];
-    const index = newBullets.indexOf(bullet);
-    newBullets[index] = { ...bullet };
-    setBullets(newBullets);
+  const makeBullets = (key) => {
+    if (key.key === " ") {
+      const newBullet = [
+        {
+          vertical: verticalPos,
+          horizontal: horizontalPos,
+        },
+      ];
+      setBullets((prev) => prev.concat(newBullet));
+    }
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      if (firing < 760) {
-        setFiring((prev) => prev + 16);
-      } else {
-        setFiring(verticalPos);
-      }
-    }, 10);
-  }, [firing]);
+    window.addEventListener("keydown", makeBullets);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setBullets([{ horizontal: horizontalPos, vertical: firing }]);
-    }, 10);
-  }, [bullets]);
+    return () => {
+      window.removeEventListener("keydown", makeBullets);
+    };
+  });
 
   return (
     <>
-      {bullets.filter((i) => i.vertical < 760).map((bullet) => (<div role="button" className="fire" aria-label="Bullet" style={{ left: bullet.horizontal, bottom: bullet.vertical }} />))}
+      {bullets.map((bullet, i) => (
+        <Bullet
+          key={i}
+          vertical={bullet.vertical}
+          horizontal={bullet.horizontal}
+        />
+      ))}
     </>
   );
 };
