@@ -4,10 +4,13 @@ import Player from "./components/player";
 import Enemy from "./components/enemy";
 
 const Game = () => {
-  // const [enemyArr] = useState([{ id: 0, name: 'enemyAlien', position: 10 },
-  //   { id: 1, name: 'enemyUfo', position: 90 },
-  //   { id: 2, name: 'enemyAlien', position: 170 }, { id: 3, name: 'enemyUfo', position: 250 },
-  //   { id: 4, name: 'enemyAlien', position: 330 }]);
+  const [enemyArr] = useState([
+    { id: 0, name: "enemyAlien", position: 10 },
+    { id: 1, name: "enemyUfo", position: 90 },
+    { id: 2, name: "enemyAlien", position: 170 },
+    { id: 3, name: "enemyUfo", position: 250 },
+    { id: 4, name: "enemyAlien", position: 330 },
+  ]);
 
   // const [enemyPos, setEnemyPos] = useState();
   // console.log(enemyArr);
