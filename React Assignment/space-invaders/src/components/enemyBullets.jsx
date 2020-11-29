@@ -21,7 +21,7 @@ const Bullet = (props) => {
           role="button"
           className="fire"
           aria-label="Bullet"
-          style={{ left: horizontal, bottom: bulletPosition }}
+          style={{ left: horizontal, top: bulletPosition }}
         />
       </>
     );
@@ -32,12 +32,12 @@ const Bullet = (props) => {
 
 export default Bullet;
 
-// Bullet.propTypes = {
-//   horizontal: PropTypes.number,
-//   vertical: PropTypes.number,
-// };
+Bullet.propTypes = {
+  horizontal: PropTypes.number,
+  vertical: PropTypes.number,
+};
 
-// Bullet.defaultProps = {
-//   horizontal: 392,
-//   vertical: 80,
-// };
+Bullet.defaultProps = {
+  horizontal: 392,
+  vertical: 80,
+};

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Fire from "./enemyFire";
 import PropTypes from "prop-types";
 import "../styling/styles.css";
 
@@ -40,7 +41,13 @@ const Enemy = (props) => {
     return () => clearTimeout(timeout);
   }, [enemyPos, movement, speed, down]);
 
-  return <div className={name} style={{ top: down, left: enemyPos }} />;
+  return (
+    <>
+      <div className={name} style={{ top: down, left: enemyPos }}>
+        <Fire verticalPos={down} horizontalPos={enemyPos} />
+      </div>
+    </>
+  );
 };
 
 export default Enemy;

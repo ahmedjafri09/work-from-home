@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../styling/styles.css";
 import PropTypes from "prop-types";
-import Bullet from "./bullets";
+import Bullet from "./playerBullets";
 
 const Fire = (props) => {
   const { horizontalPos, verticalPos } = props;
