@@ -4,12 +4,13 @@ import "../styling/styles.css";
 
 const Bullet = (props) => {
   const { vertical, horizontal } = props;
+  const [horizontalPos] = useState(horizontal);
   const [bulletPosition, setBulletPosition] = useState(vertical);
 
   useEffect(() => {
     setTimeout(() => {
       if (bulletPosition < 760) {
-        setBulletPosition((prev) => prev + 7);
+        setBulletPosition((prev) => prev + 5);
       }
     }, 10);
   }, [bulletPosition]);
@@ -21,7 +22,7 @@ const Bullet = (props) => {
           role="button"
           className="fire"
           aria-label="Bullet"
-          style={{ left: horizontal, top: bulletPosition }}
+          style={{ left: horizontalPos, top: bulletPosition }}
         />
       </>
     );

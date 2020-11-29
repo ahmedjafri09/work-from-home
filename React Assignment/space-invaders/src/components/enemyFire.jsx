@@ -1,26 +1,39 @@
 import React, { useEffect, useState } from "react";
 import "../styling/styles.css";
 import PropTypes from "prop-types";
-import Bullet from "./playerBullets";
+import Bullet from "./enemyBullets";
 
 const Fire = (props) => {
   const { horizontalPos, verticalPos } = props;
-  const [vertical, setVertical] = useState(verticalPos);
-  const [horizontal, setHorizontal] = useState(horizontalPos);
   const [bullets, setBullets] = useState([]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      if (vertical < 720) {
-        setHorizontal((prev) => prev);
-        setVertical((prev) => prev + 7);
-      } else {
-        setVertical(verticalPos);
-      }
-    }, 10);
-  }, [vertical]);
+  const handleBullets = () => {
+    const newBullet = [
+      {
+        vertical: verticalPos,
+        horizontal: horizontalPos,
+      },
+    ];
+    setBullets((prev) => prev.concat(newBullet));
+  };
 
-  return <div className="fire" style={{ left: horizontal, top: vertical }} />;
+  useEffect(() => {
+    const getRandomTimeout = (min = 800, max = 3000) => {
+      return Math.floor(Math.random() * (max - min) + min);
+    };
+    const timer = setInterval(() => {
+      handleBullets();
+    }, getRandomTimeout(2500, 6000));
+    return () => clearInterval(timer);
+  }, [bullets]);
+
+  return (
+    <>
+      {bullets.map((bullet, i) => (
+        <Bullet key={i} vertical={verticalPos} horizontal={horizontalPos} />
+      ))}
+    </>
+  );
 };
 
 export default Fire;

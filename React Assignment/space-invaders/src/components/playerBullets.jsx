@@ -9,7 +9,7 @@ const Bullet = (props) => {
   useEffect(() => {
     setTimeout(() => {
       if (bulletPosition < 760) {
-        setBulletPosition((prev) => prev + 7);
+        setBulletPosition((prev) => prev + 5);
       }
     }, 10);
   }, [bulletPosition]);

@@ -43,9 +43,8 @@ const Enemy = (props) => {
 
   return (
     <>
-      <div className={name} style={{ top: down, left: enemyPos }}>
-        <Fire verticalPos={down} horizontalPos={enemyPos} />
-      </div>
+      <div className={name} style={{ top: down, left: enemyPos }} />
+      <Fire verticalPos={down + 50} horizontalPos={enemyPos + 20} />
     </>
   );
 };
