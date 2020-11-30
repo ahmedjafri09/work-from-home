@@ -6,6 +6,7 @@ import PlayerFire from "./components/playerFire";
 import PlayerBullet from "./components/playerBullets";
 
 const Game = () => {
+  const [pauseStatus, setPauseStatus] = useState("false");
   const [enemyArr] = useState([
     { id: 0, name: "enemyAlien", verticle: 10, horizontal: 10 },
     { id: 1, name: "enemyUfo", verticle: 90, horizontal: 10 },
@@ -19,7 +20,15 @@ const Game = () => {
     verticalPos: 10,
   });
   const [playerBullets, setPlayerBullets] = useState([]);
-  const [playerBulletPosition, setPlayerBulletPosition] = useState([]);
+  let [playerBulletPosition, setPlayerBulletPosition] = useState([]);
+
+  const pause = () => {
+    if (pauseStatus === "true") {
+      setPauseStatus("false");
+    } else {
+      setPauseStatus("true");
+    }
+  };
 
   const handleMovementOfPlayer = (keyPressed) => {
     let newState = {};
@@ -67,7 +76,7 @@ const Game = () => {
         },
       ];
       setPlayerBulletPosition((prev) => prev.concat(newBullet));
-      setPlayerBullets((prev) => prev.concat(newBullet));
+      setPlayerBullets((prev) => prev.concat([""]));
     }
   };
 
@@ -76,6 +85,11 @@ const Game = () => {
     return () => window.removeEventListener("keydown", handlePlayerFire);
   });
   const moveBullet = (bullet) => {
+    // const newPos = playerBulletPosition[index];
+    // newPos.vertical += 5;
+    // playerBulletPosition[index] = { ...newPos };
+
+    //this logic is if passing the bullet object
     const newBullets = [...playerBulletPosition];
     const index = newBullets.indexOf(bullet);
     bullet.vertical += 5;
@@ -89,37 +103,53 @@ const Game = () => {
     //   setPlayerBulletPosition(newPos);
   };
 
-  return (
-    <div className="main">
-      <div>
-        <Player
-          vertical={playerStates.verticalPos}
-          horizontal={playerStates.horizontalPos}
-          movement={() => handleMovementOfPlayer}
-          // bullets={playerBullets}
-          // setBullets={() => handlePlayerFire}
-        />
-        {playerBullets.map((bullet, i) => (
-          <PlayerBullet
-            key={i}
-            vertical={playerBulletPosition[i].vertical}
-            horizontal={playerBulletPosition[i].horizontal}
-            bullet={playerBulletPosition[i]}
-            moveBullet={moveBullet}
-          />
-        ))}
+  if (pauseStatus === "true") {
+    return (
+      <>
+        <button onClick={pause}>Play</button>
+        <div className="main">
+          <div>
+            <h1 style={{ color: "white" }}>GAME PAUSED</h1>
+          </div>
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <button onClick={pause}>Pause</button>
+        <div className="main">
+          <div>
+            <Player
+              vertical={playerStates.verticalPos}
+              horizontal={playerStates.horizontalPos}
+              movement={() => handleMovementOfPlayer}
+              // bullets={playerBullets}
+              // setBullets={() => handlePlayerFire}
+            />
+            {playerBullets.map((bullet, i) => (
+              <PlayerBullet
+                key={i}
+                index={i}
+                vertical={playerBulletPosition[i].vertical}
+                horizontal={playerBulletPosition[i].horizontal}
+                moveBullet={() => moveBullet(playerBulletPosition[i])}
+              />
+            ))}
 
-        {enemyArr.map((enemy) => (
-          <Enemy
-            key={enemy.id}
-            name={enemy.name}
-            verticalPosition={enemy.verticle}
-            horizontalPosition={enemy.horizontal}
-          />
-        ))}
-      </div>
-    </div>
-  );
+            {enemyArr.map((enemy) => (
+              <Enemy
+                key={enemy.id}
+                name={enemy.name}
+                verticalPosition={enemy.verticle}
+                horizontalPosition={enemy.horizontal}
+              />
+            ))}
+          </div>
+        </div>
+      </>
+    );
+  }
 };
 
 export default Game;

@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import "../styling/styles.css";
 
 const PlayerBullet = (props) => {
-  const { vertical, horizontal, bullet, moveBullet } = props;
-  const [bulletPosition, setBulletPosition] = useState(vertical);
+  const { vertical, horizontal, moveBullet } = props;
+  // const [bulletPosition, setBulletPosition] = useState(vertical);
 
   // useEffect(() => {
   //   setTimeout(() => {
@@ -17,19 +17,19 @@ const PlayerBullet = (props) => {
   useEffect(() => {
     setTimeout(() => {
       if (vertical < 760) {
-        moveBullet(bullet);
+        moveBullet();
       }
     }, 10);
   }, [vertical]);
 
-  if (bulletPosition < 760) {
+  if (vertical < 760) {
     return (
       <>
         <div
           role="button"
           className="fire"
           aria-label="Bullet"
-          style={{ left: horizontal, bottom: bulletPosition }}
+          style={{ left: horizontal, bottom: vertical }}
         />
       </>
     );
