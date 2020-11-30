@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./styling/styles.css";
 import Player from "./components/player";
 import Enemy from "./components/enemy";
-import PlayerFire from "./components/playerFire";
 import PlayerBullet from "./components/playerBullets";
 
 const Game = () => {
@@ -76,7 +75,7 @@ const Game = () => {
         },
       ];
       setPlayerBulletPosition((prev) => prev.concat(newBullet));
-      setPlayerBullets((prev) => prev.concat([""]));
+      setPlayerBullets((prev) => prev.concat(newBullet));
     }
   };
 
@@ -85,23 +84,30 @@ const Game = () => {
     return () => window.removeEventListener("keydown", handlePlayerFire);
   });
   const moveBullet = (bullet) => {
-    // const newPos = playerBulletPosition[index];
-    // newPos.vertical += 5;
-    // playerBulletPosition[index] = { ...newPos };
-
-    //this logic is if passing the bullet object
-    const newBullets = [...playerBulletPosition];
+    const newBullets = [...playerBullets];
     const index = newBullets.indexOf(bullet);
     bullet.vertical += 5;
     newBullets[index] = { ...bullet };
-    setPlayerBulletPosition(newBullets);
-
-    //   const newPos = {
-    //     vertical: playerBulletPosition.vertical + 5,
-    //     horizontal: playerBulletPosition.horizontal,
-    //   };
-    //   setPlayerBulletPosition(newPos);
+    setPlayerBullets(newBullets);
   };
+  // const moveBullets = (bullet) => {
+  //   // const newPos = playerBulletPosition[index];
+  //   // newPos.vertical += 5;
+  //   // playerBulletPosition[index] = { ...newPos };
+
+  //   //this logic is if passing the bullet object
+  //   const newBullets = [...playerBulletPosition];
+  //   const index = newBullets.indexOf(bullet);
+  //   bullet.vertical += 5;
+  //   newBullets[index] = { ...bullet };
+  //   setPlayerBulletPosition(newBullets);
+
+  //   //   const newPos = {
+  //   //     vertical: playerBulletPosition.vertical + 5,
+  //   //     horizontal: playerBulletPosition.horizontal,
+  //   //   };
+  //   //   setPlayerBulletPosition(newPos);
+  // };
 
   if (pauseStatus === "true") {
     return (
@@ -131,9 +137,9 @@ const Game = () => {
               <PlayerBullet
                 key={i}
                 index={i}
-                vertical={playerBulletPosition[i].vertical}
-                horizontal={playerBulletPosition[i].horizontal}
-                moveBullet={() => moveBullet(playerBulletPosition[i])}
+                vertical={bullet.vertical}
+                horizontal={bullet.horizontal}
+                moveBullet={() => moveBullet(bullet)}
               />
             ))}
 
