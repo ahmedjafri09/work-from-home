@@ -3,7 +3,7 @@ import "../styling/styles.css";
 import PropTypes from "prop-types";
 import Bullet from "./playerBullets";
 
-const Fire = (props) => {
+const PlayerFire = (props) => {
   const { horizontalPos, verticalPos } = props;
   const [bullets, setBullets] = useState([]);
 
@@ -40,14 +40,14 @@ const Fire = (props) => {
   );
 };
 
-export default Fire;
+export default PlayerFire;
 
-Fire.propTypes = {
-  horizontalPos: PropTypes.number,
-  verticalPos: PropTypes.number,
-};
+// PlayerFire.propTypes = {
+//   horizontalPos: PropTypes.number,
+//   verticalPos: PropTypes.number,
+// };
 
-Fire.defaultProps = {
-  horizontalPos: 392,
-  verticalPos: 80,
-};
+// PlayerFire.defaultProps = {
+//   horizontalPos: 392,
+//   verticalPos: 80,
+// };

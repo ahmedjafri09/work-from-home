@@ -17,7 +17,7 @@ const Enemy = (props) => {
       } else if (enemyPos >= 730 && movement === "right") {
         setMovement("left");
         if (speed > 150) {
-          setSpeed((prev) => prev - 75);
+          setSpeed((prev) => prev - 25);
         }
         if (down < 690) {
           setDown((prev) => prev + 20);
@@ -30,7 +30,7 @@ const Enemy = (props) => {
       } else if (enemyPos <= 10 && movement === "left") {
         setMovement("right");
         if (speed > 150) {
-          setSpeed((prev) => prev - 75);
+          setSpeed((prev) => prev - 25);
         }
         if (down < 690) {
           setDown((prev) => prev + 20);
