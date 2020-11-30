@@ -2,17 +2,25 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import "../styling/styles.css";
 
-const Bullet = (props) => {
-  const { vertical, horizontal } = props;
+const PlayerBullet = (props) => {
+  const { vertical, horizontal, bullet, moveBullet } = props;
   const [bulletPosition, setBulletPosition] = useState(vertical);
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     if (bulletPosition < 760) {
+  //       setBulletPosition((prev) => prev + 5);
+  //     }
+  //   }, 10);
+  // }, [bulletPosition]);
 
   useEffect(() => {
     setTimeout(() => {
-      if (bulletPosition < 760) {
-        setBulletPosition((prev) => prev + 5);
+      if (vertical < 760) {
+        moveBullet(bullet);
       }
     }, 10);
-  }, [bulletPosition]);
+  }, [vertical]);
 
   if (bulletPosition < 760) {
     return (
@@ -30,14 +38,14 @@ const Bullet = (props) => {
   }
 };
 
-export default Bullet;
+export default PlayerBullet;
 
-Bullet.propTypes = {
+PlayerBullet.propTypes = {
   horizontal: PropTypes.number,
   vertical: PropTypes.number,
 };
 
-Bullet.defaultProps = {
+PlayerBullet.defaultProps = {
   horizontal: 392,
   vertical: 80,
 };

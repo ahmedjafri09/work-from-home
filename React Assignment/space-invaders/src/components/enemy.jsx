@@ -4,10 +4,10 @@ import PropTypes from "prop-types";
 import "../styling/styles.css";
 
 const Enemy = (props) => {
-  const { name, position } = props;
-  const [enemyPos, setEnemyPos] = useState(position);
+  const { name, verticalPosition, horizontalPosition } = props;
+  const [enemyPos, setEnemyPos] = useState(horizontalPosition);
   const [movement, setMovement] = useState("right");
-  const [down, setDown] = useState(10);
+  const [down, setDown] = useState(verticalPosition);
   const [speed, setSpeed] = useState(650);
 
   useEffect(() => {
