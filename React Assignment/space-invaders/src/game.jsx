@@ -13,6 +13,7 @@ const Game = () => {
     { id: 3, name: "enemyUfo", verticle: 250, horizontal: 10 },
     { id: 4, name: "enemyAlien", verticle: 330, horizontal: 10 },
   ]);
+  const enemyCopy = [...enemyArr];
 
   const [playerStates, setPlayerStates] = useState({
     horizontalPos: 365,
@@ -108,6 +109,9 @@ const Game = () => {
   //   //   };
   //   //   setPlayerBulletPosition(newPos);
   // };
+  const destroyEnemy = () => {
+    
+  }
 
   if (pauseStatus === "true") {
     return (
@@ -136,7 +140,8 @@ const Game = () => {
             {playerBullets.map((bullet, i) => (
               <PlayerBullet
                 key={i}
-                index={i}
+                listOfEnemies = {enemyCopy}
+                destroyEnemy={()=>destroyEnemy}
                 vertical={bullet.vertical}
                 horizontal={bullet.horizontal}
                 moveBullet={() => moveBullet(bullet)}

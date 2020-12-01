@@ -4,32 +4,32 @@ import "../styling/styles.css";
 
 const PlayerBullet = (props) => {
   const { vertical, horizontal, moveBullet } = props;
-  // const [bulletPosition, setBulletPosition] = useState(vertical);
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     if (bulletPosition < 760) {
-  //       setBulletPosition((prev) => prev + 5);
-  //     }
-  //   }, 10);
-  // }, [bulletPosition]);
+  const [verticalChange, setVerticalChange] = useState(vertical);
 
   useEffect(() => {
     setTimeout(() => {
-      if (vertical < 760) {
-        moveBullet();
+      if (verticalChange < 760) {
+        setVerticalChange((prev) => prev + 5);
       }
     }, 10);
-  }, [vertical]);
+  }, [verticalChange]);
 
-  if (vertical < 760) {
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     if (vertical < 760) {
+  //       moveBullet();
+  //     }
+  //   }, 10);
+  // }, [vertical]);
+
+  if (verticalChange < 760) {
     return (
       <>
         <div
           role="button"
           className="fire"
           aria-label="Bullet"
-          style={{ left: horizontal, bottom: vertical }}
+          style={{ left: horizontal, bottom: verticalChange }}
         />
       </>
     );
