@@ -1,6 +1,4 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import "../../styling/styles.css";
+import { HANDLE_MOVEMENT } from "./playerTypes";
 
 const initialState = {
   horizontalPos: 365,
@@ -8,29 +6,13 @@ const initialState = {
 };
 
 const playerReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case keyPressed.key === "ArrowLeft" && state.horizontalPos > 10:
-      return {
-        ...state,
-        horizontalPos: state.horizontalPos - 7,
-      };
-    case keyPressed.key === "ArrowRight" && state.horizontalPos < 720:
-      return {
-        ...state,
-        horizontalPos: state.horizontalPos - 7,
-      };
-    case keyPressed.key === "ArrowUp" && state.verticalPos < 300:
-      return {
-        ...state,
-        verticalPos: state.verticalPos + 7,
-      };
-    case keyPressed.key === "ArrowDown" && state.verticalPos > 10:
-      return {
-        ...state,
-        verticalPos: state.verticalPos + 7,
-      };
-    default:
-      break;
+  if (action.type === HANDLE_MOVEMENT) {
+    return {
+      ...state,
+      horizontalPos: state.horizontalPos + 7,
+    };
+  } else {
+    return initialState;
   }
 };
 
