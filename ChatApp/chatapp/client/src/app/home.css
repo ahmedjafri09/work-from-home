@@ -9,6 +9,7 @@
   margin-top: 1.5%;
   margin-left: auto;
   margin-right: auto;
+  outline: none;
 }
 
 .header {
@@ -25,6 +26,7 @@
   background-color: #128c7e;
   border-color: #128c7e;
   border-radius: 5%;
+  outline: none;
 }
 
 .header > h1 {
@@ -32,17 +34,22 @@
 }
 
 .message-area {
+  outline: none;
   display: inline-block;
+  overflow: scroll;
   /* flex-direction: column; */
   background-color: #ece5dd;
   min-width: 100%;
   max-width: 100%;
-  min-height: 100%;
+  min-height: 400px;
+  max-height: 400px;
   text-align: left;
   padding: 1%;
+  clear: both;
 }
 
 .send-chat-area {
+  outline: none;
   min-width: 100%;
   display: flex;
   justify-content: center;
@@ -52,11 +59,13 @@
 }
 
 .input-field {
+  outline: none;
   min-width: 80%;
   min-height: max-content;
 }
 
 .send-button {
+  outline: none;
   min-height: max-content;
   background-color: #128c7e;
   border-radius: 50%;
