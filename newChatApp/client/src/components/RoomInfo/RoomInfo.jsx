@@ -8,15 +8,15 @@ const RoomData = ({ users }) => {
     <div className="textContainer">
       {users ? (
         <div>
-          <h1>People currently chatting:</h1>
+          <h2>People currently chatting:</h2>
           <div className="activeContainer">
-            <h2>
+            <h4>
               {users.map(({ name }) => (
                 <div key={name} className="activeItem">
                   <img alt="Online Icon" src={onlineIcon} /> &nbsp; {name}
                 </div>
               ))}
-            </h2>
+            </h4>
           </div>
         </div>
       ) : null}

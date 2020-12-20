@@ -9,7 +9,6 @@ const router = require("./router");
 
 //importing user functions
 const { addUser, removeUser, getUser, getUsersInRoom } = require("./users");
-const { report } = require("./router");
 
 //port to run on
 const PORT = process.env.PORT || 5000;
