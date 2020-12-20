@@ -71,7 +71,7 @@ const Chat = ({ location }) => {
           sendMessage={sendMessage}
         />
       </div>
-      <RoomInfo user={users} />
+      <RoomInfo users={users} />
     </div>
   );
 };

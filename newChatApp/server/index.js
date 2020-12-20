@@ -2,12 +2,14 @@ const express = require("express");
 const socketio = require("socket.io");
 const http = require("http");
 const cors = require("cors");
+const dayjs = require("dayjs");
 
 //importing router we created
 const router = require("./router");
 
 //importing user functions
 const { addUser, removeUser, getUser, getUsersInRoom } = require("./users");
+const { report } = require("./router");
 
 //port to run on
 const PORT = process.env.PORT || 5000;
@@ -25,10 +27,13 @@ io.on("connection", (socket) => {
     socket.emit("message", {
       user: "admin",
       text: `Welcome to the ${user.room} ${user.name}`,
+      time: dayjs().format("hh:mm A"),
     });
-    socket.broadcast
-      .to(user.room)
-      .emit("message", { user: "admin", text: `${user.name} has joined us!` });
+    socket.broadcast.to(user.room).emit("message", {
+      user: "admin",
+      text: `${user.name} has joined us!`,
+      time: dayjs().format("hh:mm A"),
+    });
 
     //joins to the room
     socket.join(user.room);
@@ -45,7 +50,11 @@ io.on("connection", (socket) => {
   socket.on("sendMessage", (message, callback) => {
     const user = getUser(socket.id);
 
-    io.to(user.room).emit("message", { user: user.name, text: message });
+    io.to(user.room).emit("message", {
+      user: user.name,
+      text: message,
+      time: dayjs().format("hh:mm A"),
+    });
     io.to(user.room).emit("roomData", {
       room: user.room,
       users: getUsersInRoom(user.room),
@@ -61,6 +70,7 @@ io.on("connection", (socket) => {
       io.to(user.room).emit("message", {
         user: "admin",
         text: `${user.name} has left the chat.`,
+        time: dayjs().format("hh:mm A"),
       });
   });
 });
