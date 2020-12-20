@@ -19,7 +19,7 @@ body {
   text-align: center;
   height: 100vh;
   align-items: center;
-  background-color: #1a1a1d;
+  background-color: #075e54;
 }
 
 .joinInnerContainer {
@@ -27,25 +27,26 @@ body {
 }
 
 .joinInput {
-  border-radius: 0;
+  border-radius: 20px;
   padding: 15px 20px;
   width: 100%;
+  background-color: #ece5dd;
 }
 
 .heading {
-  color: white;
+  color: #ece5dd;
   font-size: 2.5em;
   padding-bottom: 10px;
-  border-bottom: 2px solid white;
+  border-bottom: 2px solid #ece5dd;
 }
 
 .button {
-  color: #fff !important;
+  color: #fff;
   text-transform: uppercase;
   text-decoration: none;
-  background: #2979ff;
+  background: #25d366;
   padding: 20px;
-  border-radius: 5px;
+  border-radius: 20px;
   display: inline-block;
   border: none;
   width: 100%;

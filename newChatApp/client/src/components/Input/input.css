@@ -1,14 +1,14 @@
 .form {
   display: flex;
-  border-top: 2px solid black;
 }
 
 .input {
   border: none;
-  border-radius: 0;
+  border-radius: 20px;
   padding: 5%;
   width: 80%;
   font-size: 1.2em;
+  background-color: white;
 }
 
 input:focus,
@@ -21,9 +21,10 @@ select:focus {
   color: #fff !important;
   text-transform: uppercase;
   text-decoration: none;
-  background: #2979ff;
+  background: #25d366;
   padding: 20px;
   display: inline-block;
   border: none;
   width: 20%;
+  border-radius: 5%;
 }

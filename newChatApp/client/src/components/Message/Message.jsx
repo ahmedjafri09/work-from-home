@@ -13,14 +13,14 @@ const Message = ({ message: { user, text, time }, name }) => {
   return currentUser ? (
     <div className="messageContainer justifyEnd">
       <p className="sentText pr-10">{`${trimmedName} ${time}`}</p>
-      <div className="messageBox backgroundBlue">
-        <p className="messageText colorWhite">{reactEmoji.emojify(text)}</p>
+      <div className="messageBox backgroundGreen">
+        <p className="messageText">{reactEmoji.emojify(text)}</p>
       </div>
     </div>
   ) : (
     <div className="messageContainer justifyStart">
       <div className="messageBox backgroundLight">
-        <p className="messageText colorDark">{reactEmoji.emojify(text)}</p>
+        <p className="messageText">{reactEmoji.emojify(text)}</p>
       </div>
       <p className="sentText pl-10">{`${user} ${time}`}</p>
     </div>

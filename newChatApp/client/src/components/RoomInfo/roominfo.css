@@ -1,8 +1,10 @@
 .textContainer {
+  background-color: #ece5dd;
+  padding: 1%;
   display: flex;
   flex-direction: column;
   margin-left: 100px;
-  color: white;
+  color: #3b3b3b;
   height: 60%;
   justify-content: space-between;
 }
