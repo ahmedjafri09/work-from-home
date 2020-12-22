@@ -3,18 +3,43 @@ const socketio = require("socket.io");
 const http = require("http");
 const cors = require("cors");
 const dayjs = require("dayjs");
-
+const assert = require("assert");
+const { MongoClient } = require("mongodb");
+const uri =
+  "mongodb+srv://Ahmed:1234@firstcluster.qn8ps.mongodb.net/chat_app?retryWrites=true&w=majority";
 
 //importing router we created
 const router = require("./router");
 
 //importing user functions
-const { signUp, addUser, removeUser, getUser, getUsersInRoom } = require("./users");
+const {
+  signUp,
+  addUser,
+  removeUser,
+  getUser,
+  getUsersInRoom,
+} = require("./users");
 
-//importing db connection
-const { main, createRoom, createMessage, createUser, retrieveUsers } = require('./mongo');
-main();
-// retrieveUsers();
+// importing db connection
+const { main, retrieveUsers } = require("./mongo");
+
+// main();
+// const usersFromDb = retrieveUsers().then;
+// console.log("GOT THE DATA WOOHOO!!!! " + usersFromDb[1]);
+// let users = [];
+// (async () => {
+//   const client = new MongoClient(uri);
+//   await client.connect(async function (err, client) {
+//     assert.strictEqual(null, err);
+//     console.log("Connected correctly to server.....");
+//     const db = client.db("chat_app");
+//     users = await db.collection("users").find().toArray();
+//     for (var i = 0; i < users.length; i++) {
+//       // console.log("user: " + JSON.stringify(users[i]));
+//       console.log(users[i]);
+//     }
+//   });
+// })();
 
 //port to run on
 const PORT = process.env.PORT || 5000;
@@ -23,15 +48,44 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
+//connection with mongodb
+const client = new MongoClient(uri);
+
 io.on("connection", (socket) => {
+  // socket.on("signUp", ({ username, name, email, password }, callback) => {
+  //   const { error, user } = signUp({
+  //     _id: username,
+  //     username,
+  //     name,
+  //     email,
+  //     password,
+  //   });
+
+  //   if (error) return callback(error);
+
+  //   // createUser(user);
+  //   callback();
+  // });
 
   socket.on("signUp", ({ username, name, email, password }, callback) => {
-    const { error, user } = signUp({ _id: username, username, name, email, password });
-
-    if (error) return callback(error);
-
-    // createUser(user);
-    callback();
+    (async () => {
+      const client = new MongoClient(uri);
+      await client.connect(async function (err, client) {
+        assert.strictEqual(null, err);
+        console.log("Connected correctly to server.....");
+        const db = client.db("chat_app").collection("users");
+        const users = await db.find().toArray();
+        console.log(users.length);
+        //finding existing users
+        const userExists = users.find((user) => user.username === username);
+        console.log(userExists);
+        if (userExists) {
+          return callback("user already exists!");
+        }
+        const user = { _id: username, username, name, email, password };
+        await db.insertOne(user);
+      });
+    })();
   });
 
   socket.on("join", ({ name, room }, callback) => {
