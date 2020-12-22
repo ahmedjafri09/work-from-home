@@ -16,11 +16,11 @@ const Authentication = () => {
     if (!name || !username || !email || !password) return e.preventDefault();
 
     socket = io(CONNECTIONPOINT);
-    socket.emit("signUp", { username, name, email, password }, (error) => {
-      if (error) {
-        console.log(error);
-        alert(error);
-        setError(error);
+    socket.emit("signUp", { username, name, email, password }, (callback) => {
+      if (callback) {
+        console.log(callback);
+        alert(callback);
+        setError(callback);
       }
     });
   };

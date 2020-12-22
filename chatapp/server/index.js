@@ -84,6 +84,25 @@ io.on("connection", (socket) => {
         }
         const user = { _id: username, username, name, email, password };
         await db.insertOne(user);
+        return callback("Signed up! Welcome " + name);
+      });
+    })();
+  });
+
+  socket.on("login", ({ username, password }, callback) => {
+    (async () => {
+      const client = new MongoClient(uri);
+      await client.connect(async function (err, client) {
+        assert.strictEqual(null, err);
+        console.log("Connected correctly to server.....");
+        const db = client.db("chat_app").collection("users");
+        const users = await db.find({ username, password }).toArray();
+        console.log(users.length);
+        //finding existing users
+        if (users.length === 0) {
+          return callback("Invalid Credentials");
+        }
+        return callback("Logged in!");
       });
     })();
   });
