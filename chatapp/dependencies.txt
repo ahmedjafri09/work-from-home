@@ -5,3 +5,6 @@ npm init
 
 for client:
 npm install --save react-router-dom socket.io-client react-scroll-to-bottom react-emoji query-string
+
+link:
+https://mongodb.github.io/node-mongodb-native/3.6/tutorials/crud/
