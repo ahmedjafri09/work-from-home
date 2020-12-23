@@ -30,7 +30,7 @@ const Chat = ({ location }) => {
     setRoom(room);
 
     //emitting event which will be defined in backend index.js
-    socket.emit("join", { name, room }, () => { });
+    socket.emit("join", { name, room }, () => {});
 
     return () => {
       //emitting disconnect event which we defined in backend index.js
@@ -42,13 +42,12 @@ const Chat = ({ location }) => {
 
   //for showing message
   useEffect(() => {
-
     socket.on("message", (message, name) => {
       setMessages([...messages, message]);
+    });
 
-      socket.on("roomData", ({ users }) => {
-        setUsers(users);
-      });
+    socket.on("roomData", ({ users }) => {
+      setUsers(users);
     });
     return () => {
       socket.off();
@@ -59,7 +58,7 @@ const Chat = ({ location }) => {
   const sendMessage = (event) => {
     event.preventDefault();
 
-    socket.emit("sendMessage", message, () => setMessage(""));
+    socket.emit("sendMessage", { message }, () => setMessage(""));
   };
 
   return (

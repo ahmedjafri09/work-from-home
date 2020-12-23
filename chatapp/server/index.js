@@ -100,7 +100,7 @@ io.on("connection", (socket) => {
         console.log(users.length);
         //finding existing users
         if (users.length === 0) {
-          return callback('invalid');
+          return callback("invalid");
         }
 
         return callback("loggedin");
@@ -109,7 +109,7 @@ io.on("connection", (socket) => {
     })();
   });
 
-  socket.on('findUser', ({ username }, callback) => {
+  socket.on("findUser", ({ username }, callback) => {
     (async () => {
       const client = new MongoClient(uri);
       await client.connect(async function (err, client) {
@@ -120,15 +120,15 @@ io.on("connection", (socket) => {
         console.log(users.length);
         //finding existing users
         if (users.length > 0) {
-          return callback('user found');
+          return callback("user found");
         }
-        return callback('');
+        return callback("");
       });
       // console.log('checking')
     })();
-  })
+  });
 
-  socket.on('getUsers', ({ }, callback) => {
+  socket.on("getUsers", ({}, callback) => {
     (async () => {
       const client = new MongoClient(uri);
       await client.connect(async function (err, client) {
@@ -136,17 +136,43 @@ io.on("connection", (socket) => {
         console.log("Connected correctly to server.....");
         const db = client.db("chat_app").collection("users");
         const users = await db.find().toArray();
-        const sendUsers = users.map(user => ({ _id: user._id, name: user.name }))
+        const sendUsers = users.map((user) => ({
+          _id: user._id,
+          name: user.name,
+        }));
         console.log(sendUsers.length);
         //finding existing users
         if (sendUsers.length > 0) {
           return callback(sendUsers);
         }
-        return callback('');
+        return callback("");
       });
       // console.log('checking')
     })();
-  })
+  });
+
+  socket.on("newRoom", ({ room }, callback) => {
+    (async () => {
+      const client = new MongoClient(uri);
+      await client.connect(async function (err, client) {
+        assert.strictEqual(null, err);
+        console.log("Connected correctly to server.....");
+        const db = client.db("chat_app").collection("rooms");
+        const rooms = await db.find().toArray();
+        console.log(rooms.length);
+        //finding existing users
+        const roomExists = rooms.find((item) => item._id === room);
+        console.log(roomExists);
+        if (roomExists) {
+          return callback("exists");
+        }
+        // const roomId = room.toLowerCase();
+        const newRoom = { _id: room, name: room, messages: [] };
+        await db.insertOne(newRoom);
+        return callback("created");
+      });
+    })();
+  });
 
   socket.on("join", ({ name, room }, callback) => {
     const { error, user } = addUser({ id: socket.id, name, room });
