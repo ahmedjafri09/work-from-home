@@ -22,6 +22,7 @@ const {
 
 // importing db connection
 const { main, retrieveUsers } = require("./mongo");
+const { format } = require("path");
 
 // main();
 // const usersFromDb = retrieveUsers().then;
@@ -198,7 +199,6 @@ io.on("connection", (socket) => {
       room: user.room,
       users: getUsersInRoom(user.room),
     });
-
     callback();
   });
 
@@ -230,6 +230,34 @@ io.on("connection", (socket) => {
       });
     })();
     // console.log(user);
+    callback();
+  });
+  socket.on("oldMessages", ({ message }, callback) => {
+    console.log("checking if old msg arahay");
+    const user = getUser(socket.id);
+    (async () => {
+      const client = new MongoClient(uri);
+      await client.connect(async function (err, client) {
+        assert.strictEqual(null, err);
+        console.log("Connected correctly to server.....in old messages");
+        const db = client.db("chat_app").collection("rooms");
+        let msgToFrontEnd = await db
+          .find({ name: user.room }, { messages: 1, _id: 0 })
+          .toArray();
+        msgToFrontEnd = msgToFrontEnd[0].messages.map((msg) => msg);
+        msgToFrontEnd.forEach((msg) => {
+          console.log(msg);
+          io.to(user.room).emit("message", {
+            user: msg.user,
+            text: msg.text,
+            time: msg.time,
+          });
+        });
+        // msgToFrontEnd = msgToFrontEnd[msgToFrontEnd.length - 1];
+        console.log(msgToFrontEnd);
+        console.log("checking what message: " + message);
+      });
+    })();
     callback();
   });
 

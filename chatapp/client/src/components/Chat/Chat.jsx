@@ -54,6 +54,15 @@ const Chat = ({ location }) => {
     };
   }, [messages]);
 
+  useEffect(() => {
+    // socket = io(CONNECTIONPOINT);
+    socket.on("oldMessages", (message) => {
+      setMessages([...messages, message]);
+    });
+    console.log("getting old messages");
+    console.log(messages);
+  }, []);
+
   //for sending message
   const sendMessage = (event) => {
     event.preventDefault();
