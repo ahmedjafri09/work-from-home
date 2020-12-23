@@ -1,5 +1,5 @@
-const { createUser, retrieveUsername, retrieveUsers } = require('./mongo');
-const { use } = require('./router');
+const { createUser, retrieveUsername, retrieveUsers } = require("./mongo");
+const { use } = require("./router");
 const users = [{}];
 const currUsers = [];
 
@@ -21,7 +21,6 @@ const signUp = ({ _id, username, name, email, password }) => {
   //   (user) => user.email === email
   // );
 
-
   // let emailExists;
   // (async () => {
   //   emailExists = await retrieveUsersEmail(email);
@@ -40,8 +39,6 @@ const signUp = ({ _id, username, name, email, password }) => {
   // })().then(console.log('error checking done')
   // )
 
-
-
   // MOST RECENT ONE
   // const allUsers = retrieveUsers().then();
   // console.log('printing users: ' + allUsers)
@@ -50,17 +47,11 @@ const signUp = ({ _id, username, name, email, password }) => {
   const usernameExists = retrieveUsername(username).then();
   console.log(usernameExists);
   if (usernameExists.length > 0) {
-    console.log('ERROR CAUGHT!!!!!!!!!!!!!!')
-    return { error: 'Email already exists' };
+    console.log("ERROR CAUGHT!!!!!!!!!!!!!!");
+    return { error: "Email already exists" };
   }
 
   // console.log('error checking done')
-
-
-
-
-
-
 
   // console.log('bohat mazaydaaaar ' + emailExists);
 
@@ -72,14 +63,14 @@ const signUp = ({ _id, username, name, email, password }) => {
   // console.log(currUsers);
 
   return { user };
-}
+};
 
 //get all users from DB
 
 //adding a user
 const addUser = ({ id, name, room }) => {
   name = name.trim().toLowerCase();
-  room = room.trim().toLowerCase();
+  // room = room.trim().toLowerCase();
 
   //checking is user already exists
   const existingUserCheck = users.find(

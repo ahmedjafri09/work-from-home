@@ -204,17 +204,32 @@ io.on("connection", (socket) => {
 
   socket.on("sendMessage", ({ message }, callback) => {
     const user = getUser(socket.id);
-
+    const time = dayjs().format("hh:mm A");
     io.to(user.room).emit("message", {
       user: user.name,
       text: message,
-      time: dayjs().format("hh:mm A"),
+      time: time,
     });
     io.to(user.room).emit("roomData", {
       room: user.room,
       users: getUsersInRoom(user.room),
     });
-
+    (async () => {
+      const newMessage = { user: user.name, time: time, text: message };
+      const client = new MongoClient(uri);
+      await client.connect(async function (err, client) {
+        assert.strictEqual(null, err);
+        console.log("Connected correctly to server.....");
+        const db = client.db("chat_app").collection("rooms");
+        await db.updateOne(
+          { name: user.room },
+          { $push: { messages: newMessage } }
+        );
+        console.log(user.room);
+        console.log("new message added!: " + message);
+      });
+    })();
+    // console.log(user);
     callback();
   });
 
