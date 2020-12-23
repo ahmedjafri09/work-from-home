@@ -1,6 +1,6 @@
 const { createUser, retrieveUsername, retrieveUsers } = require('./mongo');
 const { use } = require('./router');
-const users = [];
+const users = [{}];
 const currUsers = [];
 
 //sign-up a user

@@ -21,10 +21,10 @@ async function main() {
 // main().catch(console.error);
 
 //creating a new room
-async function createRoom(room) {}
+async function createRoom(room) { }
 
 //creating a new message in room
-async function createMessage(room, message) {}
+async function createMessage(room, message) { }
 
 //adding new user
 async function createUser(user) {

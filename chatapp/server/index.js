@@ -100,12 +100,53 @@ io.on("connection", (socket) => {
         console.log(users.length);
         //finding existing users
         if (users.length === 0) {
-          return callback("Invalid Credentials");
+          return callback('invalid');
         }
-        return callback("Logged in!");
+
+        return callback("loggedin");
       });
+      // console.log('checking')
     })();
   });
+
+  socket.on('findUser', ({ username }, callback) => {
+    (async () => {
+      const client = new MongoClient(uri);
+      await client.connect(async function (err, client) {
+        assert.strictEqual(null, err);
+        console.log("Connected correctly to server.....");
+        const db = client.db("chat_app").collection("users");
+        const users = await db.find({ username }).toArray();
+        console.log(users.length);
+        //finding existing users
+        if (users.length > 0) {
+          return callback('user found');
+        }
+        return callback('');
+      });
+      // console.log('checking')
+    })();
+  })
+
+  socket.on('getUsers', ({ }, callback) => {
+    (async () => {
+      const client = new MongoClient(uri);
+      await client.connect(async function (err, client) {
+        assert.strictEqual(null, err);
+        console.log("Connected correctly to server.....");
+        const db = client.db("chat_app").collection("users");
+        const users = await db.find().toArray();
+        const sendUsers = users.map(user => ({ _id: user._id, name: user.name }))
+        console.log(sendUsers.length);
+        //finding existing users
+        if (sendUsers.length > 0) {
+          return callback(sendUsers);
+        }
+        return callback('');
+      });
+      // console.log('checking')
+    })();
+  })
 
   socket.on("join", ({ name, room }, callback) => {
     const { error, user } = addUser({ id: socket.id, name, room });
@@ -135,7 +176,7 @@ io.on("connection", (socket) => {
     callback();
   });
 
-  socket.on("sendMessage", (message, callback) => {
+  socket.on("sendMessage", ({ message }, callback) => {
     const user = getUser(socket.id);
 
     io.to(user.room).emit("message", {

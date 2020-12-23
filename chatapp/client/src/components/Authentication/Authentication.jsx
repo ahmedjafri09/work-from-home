@@ -9,7 +9,6 @@ const Authentication = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const CONNECTIONPOINT = "localhost:5000";
 
   const handleForm = (e) => {
@@ -19,8 +18,7 @@ const Authentication = () => {
     socket.emit("signUp", { username, name, email, password }, (callback) => {
       if (callback) {
         console.log(callback);
-        alert(callback);
-        setError(callback);
+        // alert(callback);
       }
     });
   };
@@ -61,14 +59,11 @@ const Authentication = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button className="button mt-20" type="submit" onClick={handleForm}>
-          Register
-          {error ? (
-            <Link to={"./signup"} />
-          ) : (
-            <Link to={`./chat?name=${name}&room=${email}`} />
-          )}
+        <Link to={"./"} >
+          <button className="button mt-20" type="submit" onClick={handleForm}>
+            Register
         </button>
+        </Link>
         {/* <Link
                     onClick={handleForm}
                     to={''}

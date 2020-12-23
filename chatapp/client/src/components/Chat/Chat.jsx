@@ -26,6 +26,7 @@ const Chat = ({ location }) => {
     socket = io(CONNECTIONPOINT);
 
     setName(name);
+    console.log(name);
     setRoom(room);
 
     //emitting event which will be defined in backend index.js
@@ -41,7 +42,8 @@ const Chat = ({ location }) => {
 
   //for showing message
   useEffect(() => {
-    socket.on("message", (message) => {
+
+    socket.on("message", (message, name) => {
       setMessages([...messages, message]);
 
       socket.on("roomData", ({ users }) => {
