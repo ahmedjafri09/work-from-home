@@ -68,8 +68,8 @@ const Login = () => {
 
           <button onClick={handleLogin} className="button mt-20">
             Sign in
-          {dataLoaded ? <Redirect to={`./join?name=${username}`} /> : null}
           </button>
+          {dataLoaded ? <Redirect to={`./join?name=${username}`} /> : null}
 
           <Link
             // onClick={(e) => (!name || !room ? e.preventDefault() : null)}

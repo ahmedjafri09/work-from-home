@@ -73,7 +73,7 @@ io.on("connection", (socket) => {
       const client = new MongoClient(uri);
       await client.connect(async function (err, client) {
         assert.strictEqual(null, err);
-        console.log("Connected correctly to server.....");
+        console.log("Connected correctly to server.....in signup");
         const db = client.db("chat_app").collection("users");
         const users = await db.find().toArray();
         console.log(users.length);
@@ -95,7 +95,7 @@ io.on("connection", (socket) => {
       const client = new MongoClient(uri);
       await client.connect(async function (err, client) {
         assert.strictEqual(null, err);
-        console.log("Connected correctly to server.....");
+        console.log("Connected correctly to server.....in login");
         const db = client.db("chat_app").collection("users");
         const users = await db.find({ username, password }).toArray();
         console.log(users.length);
@@ -103,8 +103,31 @@ io.on("connection", (socket) => {
         if (users.length === 0) {
           return callback("invalid");
         }
+        await db.updateOne({ username: username }, { $set: { online: true } });
 
         return callback("loggedin");
+      });
+      // console.log('checking')
+    })();
+  });
+  socket.on("logOut", ({ username }) => {
+    console.log(username);
+    (async () => {
+      const client = new MongoClient(uri);
+      await client.connect(async function (err, client) {
+        assert.strictEqual(null, err);
+        console.log("Connected correctly to server.....in logOut");
+        const db = client.db("chat_app").collection("users");
+        // let users = await db.find({ username }).toArray();
+        // console.log(users);
+        // //finding existing users
+        // if (users.length === 0) {
+        //   console.log('no user found for logging out');
+        // }
+        await db.updateOne({ username }, { $set: { online: false } });
+
+        // console.log(await db.find({ username }).toArray());
+        return;
       });
       // console.log('checking')
     })();
@@ -115,7 +138,7 @@ io.on("connection", (socket) => {
       const client = new MongoClient(uri);
       await client.connect(async function (err, client) {
         assert.strictEqual(null, err);
-        console.log("Connected correctly to server.....");
+        console.log("Connected correctly to server.....findUser");
         const db = client.db("chat_app").collection("users");
         const users = await db.find({ username }).toArray();
         console.log(users.length);
@@ -129,19 +152,21 @@ io.on("connection", (socket) => {
     })();
   });
 
-  socket.on("getUsers", ({}, callback) => {
+  socket.on("getUsers", ({ }, callback) => {
     (async () => {
+      console.log(socket.id);
       const client = new MongoClient(uri);
       await client.connect(async function (err, client) {
         assert.strictEqual(null, err);
-        console.log("Connected correctly to server.....");
+        console.log("Connected correctly to server.....getUser");
         const db = client.db("chat_app").collection("users");
-        const users = await db.find().toArray();
+        const users = await db.find({}).toArray();
         const sendUsers = users.map((user) => ({
           _id: user._id,
           name: user.name,
         }));
         console.log(sendUsers.length);
+        console.log(sendUsers);
         //finding existing users
         if (sendUsers.length > 0) {
           return callback(sendUsers);
@@ -157,7 +182,7 @@ io.on("connection", (socket) => {
       const client = new MongoClient(uri);
       await client.connect(async function (err, client) {
         assert.strictEqual(null, err);
-        console.log("Connected correctly to server.....");
+        console.log("Connected correctly to server.....newRoom");
         const db = client.db("chat_app").collection("rooms");
         const rooms = await db.find().toArray();
         console.log(rooms.length);
@@ -170,6 +195,30 @@ io.on("connection", (socket) => {
         // const roomId = room.toLowerCase();
         const newRoom = { _id: room, name: room, messages: [] };
         await db.insertOne(newRoom);
+        return callback("created");
+      });
+    })();
+  });
+
+  socket.on("newPrivateRoom", ({ privRoom }, callback) => {
+    (async () => {
+      const client = new MongoClient(uri);
+      await client.connect(async function (err, client) {
+        assert.strictEqual(null, err);
+        console.log("Connected correctly to server.....newPrivateRoom");
+        console.log('creating new room: ' + privRoom);
+        const db = client.db("chat_app").collection("rooms");
+        const rooms = await db.find().toArray();
+        console.log(rooms.length);
+        //finding existing users
+        const roomExists = rooms.find((item) => item._id === privRoom);
+        console.log(roomExists);
+        if (roomExists) {
+          return callback("exists");
+        }
+        // const roomId = room.toLowerCase();
+        const addRoom = { _id: privRoom, name: privRoom, messages: [] };
+        await db.insertOne(addRoom);
         return callback("created");
       });
     })();
@@ -199,6 +248,18 @@ io.on("connection", (socket) => {
       room: user.room,
       users: getUsersInRoom(user.room),
     });
+    (async () => {
+      const client = new MongoClient(uri);
+      await client.connect(async function (err, client) {
+        assert.strictEqual(null, err);
+        console.log("Connected correctly to server.....join");
+        const db = client.db("chat_app").collection("users");
+        // const users = await db.find({ username: user.name, online: false }).toArray();
+        // console.log(users.length);
+
+        await db.updateOne({ username: user.name }, { $set: { online: true } });
+      })
+    })();
     callback();
   });
 
@@ -219,7 +280,7 @@ io.on("connection", (socket) => {
       const client = new MongoClient(uri);
       await client.connect(async function (err, client) {
         assert.strictEqual(null, err);
-        console.log("Connected correctly to server.....");
+        console.log("Connected correctly to server.....in send message");
         const db = client.db("chat_app").collection("rooms");
         await db.updateOne(
           { name: user.room },
@@ -232,44 +293,90 @@ io.on("connection", (socket) => {
     // console.log(user);
     callback();
   });
-  socket.on("oldMessages", ({ message }, callback) => {
-    console.log("checking if old msg arahay");
+
+  socket.on("oldMessage", ({ }, callback) => {
+    console.log('in old message function')
     const user = getUser(socket.id);
+
     (async () => {
+
       const client = new MongoClient(uri);
       await client.connect(async function (err, client) {
         assert.strictEqual(null, err);
-        console.log("Connected correctly to server.....in old messages");
+        console.log("Connected correctly to server.....in old message");
+
         const db = client.db("chat_app").collection("rooms");
         let msgToFrontEnd = await db
-          .find({ name: user.room }, { messages: 1, _id: 0 })
+          .find({ _id: user.room }, { messages: 1, _id: 0 })
           .toArray();
         msgToFrontEnd = msgToFrontEnd[0].messages.map((msg) => msg);
-        msgToFrontEnd.forEach((msg) => {
-          console.log(msg);
-          io.to(user.room).emit("message", {
-            user: msg.user,
-            text: msg.text,
-            time: msg.time,
-          });
-        });
-        // msgToFrontEnd = msgToFrontEnd[msgToFrontEnd.length - 1];
         console.log(msgToFrontEnd);
-        console.log("checking what message: " + message);
+        socket.emit('chatHistory', msgToFrontEnd);
+
       });
     })();
     callback();
   });
 
+
+
+
+  // socket.on("oldMessages", ({ message }, callback) => {
+  //   console.log("checking if old msg arahay");
+  //   const user = getUser(socket.id);
+  //   (async () => {
+  //     const client = new MongoClient(uri);
+  //     await client.connect(async function (err, client) {
+  //       assert.strictEqual(null, err);
+  //       console.log("Connected correctly to server.....in old messages");
+  //       const db = client.db("chat_app").collection("rooms");
+  //       let msgToFrontEnd = await db
+  //         .find({ name: user.room }, { messages: 1, _id: 0 })
+  //         .toArray();
+  //       msgToFrontEnd = msgToFrontEnd[0].messages.map((msg) => msg);
+  //       msgToFrontEnd.forEach((msg) => {
+  //         console.log(msg);
+  //         io.to(user.room).emit("message", {
+  //           user: msg.user,
+  //           text: msg.text,
+  //           time: msg.time,
+  //         });
+  //       });
+  //       // msgToFrontEnd = msgToFrontEnd[msgToFrontEnd.length - 1];
+  //       console.log(msgToFrontEnd);
+  //       console.log("checking what message: " + message);
+  //     });
+  //   })();
+  //   callback();
+  // });
+
   socket.on("disconnect", () => {
+    console.log('IN DISCONNECT FUNCTION');
     const user = removeUser(socket.id);
 
-    if (user)
+    if (user) {
       io.to(user.room).emit("message", {
         user: "admin",
         text: `${user.name} has left the chat.`,
         time: dayjs().format("hh:mm A"),
       });
+      (async () => {
+        const client = new MongoClient(uri);
+        await client.connect(async function (err, client) {
+          assert.strictEqual(null, err);
+          console.log("Connected correctly to server.....LEAVING");
+          const db = client.db("chat_app").collection("users");
+          const users = await db.find({ username: user.name, online: true }).toArray();
+
+          console.log(users.length);
+
+          await db.updateOne({ username: user.name }, { $set: { online: false } });
+
+          return;
+        });
+        // console.log('checking')
+      })();
+    }
   });
 });
 

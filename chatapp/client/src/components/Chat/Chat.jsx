@@ -17,6 +17,8 @@ const Chat = ({ location }) => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [users, setUsers] = useState();
+  const [chatHistory, setHistory] = useState();
+  const [loaded, setLoaded] = useState(false);
   const CONNECTIONPOINT = "localhost:5000";
 
   //for joining
@@ -24,13 +26,15 @@ const Chat = ({ location }) => {
     const { name, room } = queryString.parse(location.search);
 
     socket = io(CONNECTIONPOINT);
+    // console.log('testing socket');
+    // console.log(socket);
 
     setName(name);
-    console.log(name);
+    // console.log(name);
     setRoom(room);
 
     //emitting event which will be defined in backend index.js
-    socket.emit("join", { name, room }, () => {});
+    socket.emit("join", { name, room }, () => { });
 
     return () => {
       //emitting disconnect event which we defined in backend index.js
@@ -42,12 +46,13 @@ const Chat = ({ location }) => {
 
   //for showing message
   useEffect(() => {
-    socket.on("message", (message, name) => {
+    socket.on("message", (message) => {
       setMessages([...messages, message]);
     });
 
     socket.on("roomData", ({ users }) => {
       setUsers(users);
+      // console.log(users)
     });
     return () => {
       socket.off();
@@ -55,13 +60,17 @@ const Chat = ({ location }) => {
   }, [messages]);
 
   useEffect(() => {
-    // socket = io(CONNECTIONPOINT);
-    socket.on("oldMessages", (message) => {
-      setMessages([...messages, message]);
+    ////////////////////////////
+    socket.emit("oldMessage", {}, () => setMessage(""))
+    socket.on("chatHistory", (history) => {
+      // console.log('getting chat history');
+      setHistory(history);
+      setLoaded(true);
     });
-    console.log("getting old messages");
-    console.log(messages);
-  }, []);
+    if (chatHistory) {
+      setMessages(messages.concat(chatHistory));
+    }
+  }, chatHistory);
 
   //for sending message
   const sendMessage = (event) => {
@@ -70,10 +79,17 @@ const Chat = ({ location }) => {
     socket.emit("sendMessage", { message }, () => setMessage(""));
   };
 
+  const logOut = (event) => {
+    event.preventDefault();
+
+    socket.emit('logOut', { event });
+  }
+
   return (
     <div className="outerContainer">
       <div className="container">
-        <InfoBar room={room} />
+        <InfoBar room={room} name={name} />
+        {loaded ? null : <div className='loadingMessage'>loading messages</div>}
         <Messages messages={messages} name={name} />
         <Input
           message={message}

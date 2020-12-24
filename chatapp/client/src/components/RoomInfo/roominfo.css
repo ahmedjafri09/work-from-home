@@ -20,6 +20,8 @@
 .activeItem {
   display: flex;
   align-items: center;
+  margin-bottom: 20px;
+  color: #3b3b3b;
 }
 
 .activeContainer img {

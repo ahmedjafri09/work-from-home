@@ -3,14 +3,14 @@ import "./infobar.css";
 import closeIcon from "../../icons/closeIcon.png";
 import onlineIcon from "../../icons/onlineIcon.png";
 
-const InfoBar = ({ room }) => (
+const InfoBar = ({ room, name }) => (
   <div className="infoBar">
     <div className="leftInnerContainer">
       <img className="onlineIcon" src={onlineIcon} alt="online" />
       <h3>{room}</h3>
     </div>
     <div className="rightInnerContainer">
-      <a href="/">
+      <a href={`/join?name=${name}`}>
         <img src={closeIcon} alt="close" />
       </a>
     </div>
