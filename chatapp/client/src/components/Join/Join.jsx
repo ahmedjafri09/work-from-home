@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import queryString from "query-string";
 import { Link, Redirect } from "react-router-dom";
+import onlineIcon from "../../icons/onlineIcon.png";
 import "./join.css";
 import io from "socket.io-client";
 
@@ -15,13 +16,14 @@ const Join = ({ location }) => {
   const [ldScreen, setLdScreen] = useState(true);
   const [exists, setExists] = useState(false);
   const [creating, setCreating] = useState();
-  const [privateRoomName, setPrivateRoomName] = useState('');
+  const [privateRoomName, setPrivateRoomName] = useState("");
   const [roomLoaded, setRoomLoaded] = useState(false);
 
   useEffect(() => {
     const { name } = queryString.parse(location.search);
     socket = io(CONNECTIONPOINT);
     setName(name);
+    socket.emit("atJoinScreen", { name }, () => {});
     console.log(name);
   }, [location]);
 
@@ -34,7 +36,7 @@ const Join = ({ location }) => {
         console.log(callback);
         // alert(callback);
         setExists(true);
-        setCreating(false)
+        setCreating(false);
       }
       if (callback === "created") {
         console.log(callback);
@@ -47,10 +49,13 @@ const Join = ({ location }) => {
 
   useEffect(() => {
     // socket = io(CONNECTIONPOINT);
-    socket.emit("getUsers", {}, (callback) => {
-      // console.log(callback);
-      setUsers([...callback]);
-      // console.log(users);
+    const { name } = queryString.parse(location.search);
+    setName(name);
+    socket.emit("getUsers", name, () => setUsers(""));
+    socket.on("loadUsers", (callback) => {
+      console.log(callback);
+      setUsers(callback);
+      console.log(users);
       setLdScreen(false);
     });
     return () => {
@@ -61,19 +66,18 @@ const Join = ({ location }) => {
 
   const privateRoom = (friendName) => {
     // console.log(socket.id);
-    const { name } = queryString.parse(location.search);
-    setName(name);
     console.log(name);
     let privRoom = name + "" + friendName;
     privRoom = [...privRoom].sort((a, b) => a.localeCompare(b)).join("");
     console.log(privRoom);
 
-    socket.emit("newPrivateRoom", { privRoom }, (callback) => {
+    friendName = `${friendName} & ${name}`;
+    socket.emit("newPrivateRoom", { privRoom, friendName }, (callback) => {
       if (callback === "exists") {
         console.log(callback);
         // alert(callback);
         setExists(true);
-        setCreating(false)
+        setCreating(false);
         setPrivateRoomName(privRoom);
         setRoomLoaded(true);
       }
@@ -85,14 +89,13 @@ const Join = ({ location }) => {
         // setExists(false);
       }
     });
-  }
+  };
 
   const logOut = (username) => {
     // event.preventDefault();
 
-    socket.emit('logOut', { username });
-  }
-
+    socket.emit("logOut", { username });
+  };
 
   return (
     <div className="joinOuterContainer">
@@ -105,8 +108,8 @@ const Join = ({ location }) => {
             type="text"
             onChange={(e) => setRoom(e.target.value)}
           />
-          {creating ? <p className='status'>creating room...</p> : null}
-          {exists ? <p className='status'>Room already exists!</p> : null}
+          {creating ? <p className="status">creating room...</p> : null}
+          {exists ? <p className="status">Room already exists!</p> : null}
         </div>
         <button onClick={handleRoom} className="button mt-20" type="submit">
           Create Room
@@ -123,7 +126,11 @@ const Join = ({ location }) => {
           // onClick={(e) => (!name || !room ? e.preventDefault() : null)}
           to={"./"}
         >
-          <button className="button mt-20" type="submit" onClick={(e) => (!name ? e.preventDefault : logOut(name))}>
+          <button
+            className="button mt-20"
+            type="submit"
+            onClick={(e) => (!name ? e.preventDefault : logOut(name))}
+          >
             Logout
           </button>
         </Link>
@@ -134,17 +141,25 @@ const Join = ({ location }) => {
             <h3>Loading...</h3>
           </div>
         ) : (
-            <div className="listContainer">
-              <h3>Online Friends:</h3>
-              {users.map((user, i) => (
-                user._id !== name ?
-                  <h4 onClick={() => privateRoom(user._id)} className="onlineList" key={i}>
-                    {user.name}
-                  </h4> : null
-              ))}
-              {roomLoaded ? <Redirect to={`chat?name=${name}&room=${privateRoomName}`} /> : null}
-            </div>
-          )}
+          <div className="listContainer">
+            <h3>Online Friends:</h3>
+            {users.map((user, i) =>
+              user._id !== name ? (
+                <h4
+                  onClick={() => privateRoom(user._id)}
+                  className="onlineList"
+                  key={i}
+                >
+                  <img alt="Online Icon" src={onlineIcon} /> &nbsp;
+                  {` ${user.name} (${user._id})`}
+                </h4>
+              ) : null
+            )}
+            {roomLoaded ? (
+              <Redirect to={`chat?name=${name}&room=${privateRoomName}`} />
+            ) : null}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -24,17 +24,19 @@ const Chat = ({ location }) => {
   //for joining
   useEffect(() => {
     const { name, room } = queryString.parse(location.search);
-
+    let chatName;
     socket = io(CONNECTIONPOINT);
-    // console.log('testing socket');
-    // console.log(socket);
-
+    console.log("getting room name");
+    socket.emit("getRoomName", { room }, (roomName) => {
+      setRoom(roomName);
+      chatName = roomName;
+    });
     setName(name);
     // console.log(name);
-    setRoom(room);
+    // setRoom(room);
 
     //emitting event which will be defined in backend index.js
-    socket.emit("join", { name, room }, () => { });
+    socket.emit("join", { name, room }, () => {});
 
     return () => {
       //emitting disconnect event which we defined in backend index.js
@@ -61,7 +63,7 @@ const Chat = ({ location }) => {
 
   useEffect(() => {
     ////////////////////////////
-    socket.emit("oldMessage", {}, () => setMessage(""))
+    socket.emit("oldMessage", {}, () => setMessage(""));
     socket.on("chatHistory", (history) => {
       // console.log('getting chat history');
       setHistory(history);
@@ -82,14 +84,14 @@ const Chat = ({ location }) => {
   const logOut = (event) => {
     event.preventDefault();
 
-    socket.emit('logOut', { event });
-  }
+    socket.emit("logOut", { event });
+  };
 
   return (
     <div className="outerContainer">
       <div className="container">
         <InfoBar room={room} name={name} />
-        {loaded ? null : <div className='loadingMessage'>loading messages</div>}
+        {loaded ? null : <div className="loadingMessage">loading messages</div>}
         <Messages messages={messages} name={name} />
         <Input
           message={message}

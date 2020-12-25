@@ -41,7 +41,7 @@ body {
 }
 
 .button {
-  color: #fff;
+  color: #ece5dd;
   text-transform: uppercase;
   text-decoration: none;
   background: #25d366;
@@ -81,6 +81,7 @@ button:focus {
 
 .listContainer {
   justify-content: center;
+  color: rgb(75, 75, 75);
 }
 .onlineList {
   width: fit-content;
