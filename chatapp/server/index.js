@@ -118,13 +118,19 @@ io.on("connection", (socket) => {
         assert.strictEqual(null, err);
         console.log("Connected correctly to server.....in logOut");
         const db = client.db("chat_app").collection("users");
-        // let users = await db.find({ username }).toArray();
-        // console.log(users);
-        // //finding existing users
-        // if (users.length === 0) {
-        //   console.log('no user found for logging out');
-        // }
         await db.updateOne({ username }, { $set: { online: false } });
+
+        const users = await db.find({ online: true }).toArray();
+        const sendUsers = users.map((user) => ({
+          _id: user._id,
+          name: user.name,
+        }));
+        console.log(sendUsers.length);
+        console.log(sendUsers);
+        //finding existing users
+        if (sendUsers.length > 0) {
+          io.emit("loadUsers", sendUsers);
+        }
 
         // console.log(await db.find({ username }).toArray());
         return;
@@ -171,7 +177,7 @@ io.on("connection", (socket) => {
         console.log(sendUsers);
         //finding existing users
         if (sendUsers.length > 0) {
-          socket.emit("loadUsers", sendUsers);
+          io.emit("loadUsers", sendUsers);
         }
       });
       // console.log('checking')
@@ -195,7 +201,7 @@ io.on("connection", (socket) => {
           return callback("exists");
         }
         // const roomId = room.toLowerCase();
-        const newRoom = { _id: room, name: room, messages: [] };
+        const newRoom = { _id: room, name: room, messages: [], private: false };
         await db.insertOne(newRoom);
         return callback("created");
       });
@@ -219,7 +225,12 @@ io.on("connection", (socket) => {
           return callback("exists");
         }
         // const roomId = room.toLowerCase();
-        const addRoom = { _id: privRoom, name: friendName, messages: [] };
+        const addRoom = {
+          _id: privRoom,
+          name: friendName,
+          messages: [],
+          private: true,
+        };
         await db.insertOne(addRoom);
         return callback("created");
       });

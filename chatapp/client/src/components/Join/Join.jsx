@@ -13,6 +13,7 @@ const Join = ({ location }) => {
   const [name, setName] = useState("");
   const [room, setRoom] = useState("");
   const [users, setUsers] = useState([]);
+  // const [reload, setReload] = useState(true);
   const [ldScreen, setLdScreen] = useState(true);
   const [exists, setExists] = useState(false);
   const [creating, setCreating] = useState();
@@ -62,7 +63,26 @@ const Join = ({ location }) => {
       // socket.emit("leaving");
       socket.off();
     };
-  }, users);
+  }, []);
+
+  // trying to reload the online users list
+  // useEffect(() => {
+  //   console.log("reloading!");
+  //   const interval = setInterval(() => {
+  //     setReload(!reload);
+  //     const { name } = queryString.parse(location.search);
+  //     setName(name);
+  //     socket.emit("getUsers", name, () => setUsers(""));
+  //     socket.on("loadUsers", (callback) => {
+  //       console.log(callback);
+  //       setUsers(callback);
+  //       console.log(users);
+  //       setLdScreen(false);
+  //     });
+  //     console.log("updated reload: " + reload);
+  //   }, 5000);
+  //   return () => clearInterval(interval);
+  // }, [reload, users]);
 
   const privateRoom = (friendName) => {
     // console.log(socket.id);

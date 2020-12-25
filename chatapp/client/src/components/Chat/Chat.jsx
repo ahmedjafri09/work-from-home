@@ -40,7 +40,7 @@ const Chat = ({ location }) => {
 
     return () => {
       //emitting disconnect event which we defined in backend index.js
-      socket.emit("disconnect");
+      // socket.emit("disconnect");
       //turning the specific socket off on unmount
       socket.off();
     };
@@ -79,12 +79,6 @@ const Chat = ({ location }) => {
     event.preventDefault();
 
     socket.emit("sendMessage", { message }, () => setMessage(""));
-  };
-
-  const logOut = (event) => {
-    event.preventDefault();
-
-    socket.emit("logOut", { event });
   };
 
   return (

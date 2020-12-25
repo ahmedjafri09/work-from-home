@@ -52,7 +52,9 @@ body {
   width: 100%;
   cursor: pointer;
 }
-
+button:focus {
+  outline: 0;
+}
 .mt-20 {
   margin-top: 20px;
 }
@@ -65,10 +67,6 @@ body {
   .joinInnerContainer {
     width: 90%;
   }
-}
-
-button:focus {
-  outline: 0;
 }
 
 .onlineContainer {
