@@ -9,7 +9,7 @@ const Authentication = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const CONNECTIONPOINT = "localhost:5000";
+  const CONNECTIONPOINT = "192.168.0.106:5000";
 
   const handleForm = (e) => {
     if (!name || !username || !email || !password) return e.preventDefault();
@@ -59,10 +59,10 @@ const Authentication = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <Link to={"./"} >
+        <Link to={"./"}>
           <button className="button mt-20" type="submit" onClick={handleForm}>
             Register
-        </button>
+          </button>
         </Link>
         {/* <Link
                     onClick={handleForm}

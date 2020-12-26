@@ -83,7 +83,14 @@ io.on("connection", (socket) => {
         if (userExists) {
           return callback("user already exists!");
         }
-        const user = { _id: username, username, name, email, password, online };
+        const user = {
+          _id: username,
+          username,
+          name,
+          email,
+          password,
+          online: false,
+        };
         await db.insertOne(user);
         return callback("Signed up! Welcome " + name);
       });
@@ -331,7 +338,7 @@ io.on("connection", (socket) => {
         console.log("Connected correctly to server.....in send message");
         const db = client.db("chat_app").collection("rooms");
         await db.updateOne(
-          { name: user.room },
+          { _id: user.room },
           { $push: { messages: newMessage } }
         );
         console.log(user.room);
