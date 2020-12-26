@@ -1,8 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
-import LoadingScreen from 'react-loading-screen';
-import whatsappLogo from '../../icons/whatsappLogo.png';
+import LoadingScreen from "react-loading-screen";
+import whatsappLogo from "../../icons/whatsappLogo.png";
 import io from "socket.io-client";
 import "./login.css";
 let socket;
@@ -20,14 +20,14 @@ const Login = () => {
 
     socket = io(CONNECTIONPOINT);
     socket.emit("login", { username, password }, (callback) => {
-      if (callback === 'loggedin') {
+      if (callback === "loggedin") {
         console.log(callback);
         setDataLoaded(true);
         setLdScreen(false);
         // alert(callback);
         //   setError(error);
       }
-      if (callback === 'invalid') {
+      if (callback === "invalid") {
         setLdScreen(false);
         setErrorMsg(true);
         console.log(callback);
@@ -39,12 +39,14 @@ const Login = () => {
   //   setTimeout()
   // }
   return (
-    <LoadingScreen loading={ldScreen}
-      bgColor='#075E54'
-      spinnerColor='#25D366'
-      textColor='#ECE5DD'
+    <LoadingScreen
+      loading={ldScreen}
+      bgColor="#075E54"
+      spinnerColor="#25D366"
+      textColor="#ECE5DD"
       logoSrc={whatsappLogo}
-      text='Logging in please wait...' >
+      text="Logging in please wait..."
+    >
       <div className="joinOuterContainer">
         <div className="joinInnerContainer">
           <h1 className="heading">Enter ChatApp</h1>
@@ -63,7 +65,11 @@ const Login = () => {
               type="password"
               onChange={(e) => setPassword(e.target.value)}
             />
-            {errorMsg ? <p style={{ color: '#ECE5DD' }}>Username or Password did not match</p> : null}
+            {errorMsg ? (
+              <p style={{ color: "#ECE5DD" }}>
+                Username or Password did not match
+              </p>
+            ) : null}
           </div>
 
           <button onClick={handleLogin} className="button mt-20">
@@ -77,7 +83,7 @@ const Login = () => {
           >
             <button className="button mt-20" type="submit">
               Sign up
-          </button>
+            </button>
           </Link>
         </div>
       </div>

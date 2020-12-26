@@ -9,7 +9,7 @@ const Authentication = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const CONNECTIONPOINT = "192.168.0.106:5000";
+  const CONNECTIONPOINT = "localhost:5000";
 
   const handleForm = (e) => {
     if (!name || !username || !email || !password) return e.preventDefault();

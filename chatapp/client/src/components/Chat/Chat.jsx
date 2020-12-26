@@ -19,7 +19,7 @@ const Chat = ({ location }) => {
   const [users, setUsers] = useState();
   const [chatHistory, setHistory] = useState();
   const [loaded, setLoaded] = useState(false);
-  const CONNECTIONPOINT = "192.168.0.106:5000";
+  const CONNECTIONPOINT = "localhost:5000";
 
   //for joining
   useEffect(() => {

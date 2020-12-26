@@ -2,4 +2,26 @@
   padding: 0% 0 5% 0;
   overflow: auto;
   flex: auto;
+  height: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px #075e54;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #128c7e;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #117e71;
+}
+.messagesContainer {
+  height: 73%;
 }
