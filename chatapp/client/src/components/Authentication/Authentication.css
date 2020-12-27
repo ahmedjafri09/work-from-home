@@ -73,3 +73,8 @@ body {
 button:focus {
   outline: 0;
 }
+
+.inputContainer {
+  display: flex;
+  flex-direction: row;
+}

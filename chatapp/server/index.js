@@ -86,7 +86,7 @@ io.on("connection", (socket) => {
         const userExists = users.find((user) => user.username === username);
         console.log(userExists);
         if (userExists) {
-          return callback("user already exists!");
+          return callback("exists");
         }
         const user = {
           _id: username,
@@ -97,7 +97,7 @@ io.on("connection", (socket) => {
           online: false,
         };
         await db.insertOne(user);
-        return callback("Signed up! Welcome " + name);
+        return callback("signedup");
       });
     })();
   });
