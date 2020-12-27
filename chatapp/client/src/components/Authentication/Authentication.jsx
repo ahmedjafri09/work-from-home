@@ -17,6 +17,7 @@ const Authentication = () => {
   const [signingUp, setSigningUp] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [userExists, setUserExists] = useState(false);
+  const [error, setError] = useState("");
   const CONNECTIONPOINT = "localhost:5000";
 
   const handleForm = (e) => {
@@ -29,11 +30,18 @@ const Authentication = () => {
       //invalid
       setInvalidEmail(true);
       emailinvalid = true;
+    } else {
+      setInvalidEmail(false);
+      emailinvalid = false;
     }
+
     if (password.length < 6) {
       //invalid
       setInvalidPwd(true);
       pwdinvalid = true;
+    } else {
+      setInvalidPwd(false);
+      pwdinvalid = false;
     }
     if (!emailinvalid && !pwdinvalid) {
       console.log("in sign up!");
@@ -41,11 +49,23 @@ const Authentication = () => {
       setUserExists(false);
       socket = io(CONNECTIONPOINT);
       socket.emit("signUp", { username, name, email, password }, (callback) => {
-        if (callback === "exists") {
+        if (callback === "usernameexists") {
+          setError("Username already exists!");
+          setUserExists(true);
+          setSigningUp(false);
+        }
+        if (callback === "emailexists") {
+          setError("Email already exists!");
+          setUserExists(true);
+          setSigningUp(false);
+        }
+        if (callback === "bothexist") {
+          setError("Username and Email are taken");
           setUserExists(true);
           setSigningUp(false);
         }
         if (callback === "signedup") {
+          setError("");
           setSigningUp(false);
           setRedirect(true);
         }
@@ -105,9 +125,7 @@ const Authentication = () => {
               </p>
             ) : null}
           </div>
-          {userExists ? (
-            <p className="status">Username or Email already exists!</p>
-          ) : null}
+          {userExists ? <p className="status">{error}</p> : null}
           <button className="button mt-20" type="submit" onClick={handleForm}>
             Register
           </button>

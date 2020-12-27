@@ -75,6 +75,7 @@ io.on("connection", (socket) => {
 
   socket.on("signUp", ({ username, name, email, password }, callback) => {
     (async () => {
+      let error;
       const client = new MongoClient(uri);
       await client.connect(async function (err, client) {
         assert.strictEqual(null, err);
@@ -83,10 +84,21 @@ io.on("connection", (socket) => {
         const users = await db.find().toArray();
         console.log(users.length);
         //finding existing users
-        const userExists = users.find((user) => user.username === username);
-        console.log(userExists);
-        if (userExists) {
-          return callback("exists");
+        const usernameExists = users.find((user) => user.username === username);
+        const emailExists = users.find((user) => user.email === email);
+        console.log(usernameExists);
+        if (usernameExists) {
+          error = "usernameexists";
+          // return callback("usernameexists");
+        }
+        if (emailExists) {
+          error = "emailexists";
+        }
+        if (emailExists && usernameExists) {
+          error = "bothexist";
+        }
+        if (error) {
+          return callback(error);
         }
         const user = {
           _id: username,
