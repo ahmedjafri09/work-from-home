@@ -220,6 +220,27 @@ io.on("connection", (socket) => {
     })();
   });
 
+  socket.on("findRoom", ({ room }, callback) => {
+    (async () => {
+      const client = new MongoClient(uri);
+      await client.connect(async function (err, client) {
+        assert.strictEqual(null, err);
+        console.log("Connected correctly to server.....findRoom");
+        const db = client.db("chat_app").collection("rooms");
+        const rooms = await db.find().toArray();
+        console.log(rooms.length);
+        //finding existing users
+        const roomExists = rooms.find((item) => item._id === room);
+        console.log(roomExists);
+        if (roomExists) {
+          return callback("exists");
+        }
+        // const roomId = room.toLowerCase();
+        return callback("does not exist");
+      });
+    })();
+  });
+
   socket.on("newPrivateRoom", ({ privRoom, friendName }, callback) => {
     (async () => {
       const client = new MongoClient(uri);
