@@ -41,9 +41,9 @@ const Login = () => {
   return (
     <LoadingScreen
       loading={ldScreen}
-      bgColor="#075E54"
-      spinnerColor="#25D366"
-      textColor="#ECE5DD"
+      bgColor="#383838"
+      spinnerColor="#8d8d8d"
+      textColor="#bdbdbd"
       logoSrc={whatsappLogo}
       text="Logging in please wait..."
     >

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import io from "socket.io-client";
+import "./authentication.css";
 
 let socket;
 
@@ -62,6 +63,11 @@ const Authentication = () => {
         <Link to={"./"}>
           <button className="button mt-20" type="submit" onClick={handleForm}>
             Register
+          </button>
+        </Link>
+        <Link to={"./"}>
+          <button className="button mt-20" type="submit">
+            Sign in
           </button>
         </Link>
         {/* <Link

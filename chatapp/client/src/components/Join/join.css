@@ -19,7 +19,7 @@ body {
   text-align: center;
   height: 100vh;
   align-items: center;
-  background-color: #075e54;
+  background-color: #383838;
 }
 
 .joinInnerContainer {
@@ -30,27 +30,33 @@ body {
   border-radius: 20px;
   padding: 15px 20px;
   width: 100%;
-  background-color: #ece5dd;
+  background-color: #adadad;
+}
+.joinInput::placeholder {
+  color: #444444;
 }
 
 .heading {
-  color: #ece5dd;
+  color: #bdbdbd;
   font-size: 2.5em;
   padding-bottom: 10px;
-  border-bottom: 2px solid #ece5dd;
+  border-bottom: 2px solid #bdbdbd;
 }
 
 .button {
-  color: #ece5dd;
+  color: #d6d6d6;
   text-transform: uppercase;
   text-decoration: none;
-  background: #25d366;
+  background: #4e4e4e;
   padding: 20px;
   border-radius: 20px;
   display: inline-block;
   border: none;
   width: 100%;
   cursor: pointer;
+}
+.button:hover {
+  background: #414040;
 }
 button:focus {
   outline: 0;
@@ -71,7 +77,8 @@ button:focus {
 
 .onlineContainer {
   height: 500px;
-  background: url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png");
+  background: url("../../icons/bg.jpg");
+  background-size: cover;
   width: 300px;
   margin: 5%;
   border-radius: 10px;
@@ -79,7 +86,7 @@ button:focus {
 
 .listContainer {
   justify-content: center;
-  color: rgb(75, 75, 75);
+  color: #4b4b4b;
 }
 .onlineList {
   width: fit-content;

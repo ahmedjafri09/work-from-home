@@ -19,7 +19,7 @@ body {
   text-align: center;
   height: 100vh;
   align-items: center;
-  background-color: #075e54;
+  background-color: #383838;
 }
 
 .joinInnerContainer {
@@ -44,13 +44,16 @@ body {
   color: #fff;
   text-transform: uppercase;
   text-decoration: none;
-  background: #25d366;
+  background: #4e4e4e;
   padding: 20px;
   border-radius: 20px;
   display: inline-block;
   border: none;
   width: 100%;
   cursor: pointer;
+}
+.button:hover {
+  background: #414040;
 }
 
 .mt-20 {

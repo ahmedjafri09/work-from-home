@@ -10,17 +10,17 @@
 }
 
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px #075e54;
+  box-shadow: inset 0 0 5px #383838;
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #128c7e;
+  background: #7a7a7a;
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #117e71;
+  background: #616161;
 }
 .messagesContainer {
   height: 73%;
