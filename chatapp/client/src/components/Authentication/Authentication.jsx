@@ -26,16 +26,16 @@ const Authentication = () => {
 
     let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!re.test(email)) {
-      //valid
+      //invalid
       setInvalidEmail(true);
       emailinvalid = true;
     }
     if (password.length < 6) {
-      //
+      //invalid
       setInvalidPwd(true);
       pwdinvalid = true;
     }
-    if (emailinvalid === false && pwdinvalid === false) {
+    if (!emailinvalid && !pwdinvalid) {
       console.log("in sign up!");
       setSigningUp(true);
       setUserExists(false);
@@ -50,7 +50,6 @@ const Authentication = () => {
           setRedirect(true);
         }
       });
-      setSigningUp(false);
     }
   };
 
@@ -61,7 +60,7 @@ const Authentication = () => {
       spinnerColor="#8d8d8d"
       textColor="#bdbdbd"
       logoSrc={whatsappLogo}
-      text="Joining room please wait..."
+      text="Signing up please wait..."
     >
       <div className="joinOuterContainer">
         <div className="joinInnerContainer">
@@ -106,12 +105,13 @@ const Authentication = () => {
               </p>
             ) : null}
           </div>
-          <button className="button mt-20" type="submit" onClick={handleForm}>
-            Register
-          </button>
           {userExists ? (
             <p className="status">Username or Email already exists!</p>
           ) : null}
+          <button className="button mt-20" type="submit" onClick={handleForm}>
+            Register
+          </button>
+
           {redirect ? <Redirect to={`./join?name=${username}`} /> : null}
           <Link to={"./"}>
             <button className="button mt-20" type="submit">
