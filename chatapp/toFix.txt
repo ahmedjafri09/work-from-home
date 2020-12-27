@@ -1,0 +1,17 @@
+when enter a room that doesnt exist, the app
+should stop from loading (i.e. check the room
+availability before joining)....... done
+
+add signin button to sign up......done
+
+add loading screen on join.jsx for joining
+a room............... done
+
+add checks for email, password (correct fields)... done
+
+add comments
+
+direct link se join page pe aye tou check if logged in 
+can do this by always checking uri name against db
+
+signup pe check karo alr exist ka ... done
