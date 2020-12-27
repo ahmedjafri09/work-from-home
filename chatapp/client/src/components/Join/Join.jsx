@@ -158,7 +158,7 @@ const Join = ({ location }) => {
       <div className="onlineContainer">
         {ldScreen ? (
           <div style={{ marginTop: "10%" }}>
-            <h3>Loading...</h3>
+            <h3 style={{ color: "#4b4b4b" }}>Loading...</h3>
           </div>
         ) : (
           <div className="listContainer">

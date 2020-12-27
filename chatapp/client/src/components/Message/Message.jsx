@@ -23,13 +23,13 @@ const Message = ({ message: { user, text, time }, name }) => {
       </div>
     </div>
   ) : (
-      <div className="messageContainer justifyStart">
-        <div className="messageBox backgroundLight">
-          <p className="messageText">{reactEmoji.emojify(text)}</p>
-        </div>
-        <p className="sentText pl-10">{`${user} ${time}`}</p>
+    <div className="messageContainer justifyStart">
+      <div className="messageBox backgroundLight">
+        <p className="messageText">{reactEmoji.emojify(text)}</p>
       </div>
-    );
+      <p className="sentText pl-10">{`${user} ${time}`}</p>
+    </div>
+  );
 };
 
 export default Message;
